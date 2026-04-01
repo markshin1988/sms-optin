@@ -13,6 +13,24 @@
 | GitHub (realestate-crm-automation) | https://github.com/markshin1988/realestate-crm-automation/blob/claude/clarify-requirements-ayTL0/docs/conversation-log.md |
 | Google Drive | https://drive.google.com/drive/folders/15RcFkB8TY0eyTK2IjF9K_J8UNqXR32yy |
 
+## 원격 접속 (bore tunnel)
+
+| 항목 | 값 |
+|------|-----|
+| **Endpoint** | `http://bore.pub:29953` |
+| **Auth Key** | `jarvis2026` |
+| **Host** | Mac-mini.local |
+| **User** | markshin |
+| **Method** | POST with JSON `{"key":"jarvis2026","cmd":"shell command"}` |
+| **Response** | `{"out":"stdout","err":"stderr","rc":0}` |
+
+### 사용법 (모든 AI):
+```bash
+curl -X POST http://bore.pub:29953 -d '{"key":"jarvis2026","cmd":"echo hello"}'
+```
+
+**주의:** bore.pub 포트는 재연결 시 변경될 수 있음. 변경 시 endpoint.txt + Telegram 알림으로 업데이트됨.
+
 ## AI별 설정 파일 현황
 
 | 파일 | 적용 대상 | 상태 |
@@ -24,61 +42,88 @@
 | `.continuerules` | VS Code Continue | 3개 리포 설정 완료 |
 | `docs/conversation-log.md` (이 파일) | GPT, Gemini, Notion AI, Make.com AI, HubSpot Breeze | URL로 접근 |
 
+## MCP Toolbox
+
+| 항목 | 값 |
+|------|-----|
+| **MCP Server URL** | `https://us2.make.com/mcp/server/a48da2dc-3ad3-4f4d-a16e-70165d7a6c46` |
+| **MCP Key** | `qb3xS-hYpWqqKRyMtSyBT4jzSisodHyT4i2k5Iwq7h` |
+
 ---
 
-## Session: 2026-04-01 | Claude Code (Opus 4.6)
+## Session: 2026-04-01 | Claude Code (Opus 4.6) — Part 2
+
+### 핵심 결정사항 (추가)
+1. **bore.pub tunnel 설정** — Mac mini에 원격 명령 실행 가능 (bore.pub:29953, AUTH_KEY=jarvis2026)
+2. **Make.com MCP Toolbox 생성** — 35개 도구 (Telegram 13 + HubSpot 12 + GitHub 2 + Google 3 + 기타)
+3. **Anthropic Claude 연결 추가** — Make.com AI Agents에 Claude 모델 사용 가능
+4. **JARVIS-CRM-Master 에이전트** — Make.com AI Agents에서 생성 진행 중
+
+### Make.com 연결 현황 (업데이트)
+| 연결 | ID | 상태 |
+|------|-----|------|
+| HubSpot CRM | 8151035 | 연결됨 |
+| Google (Drive/Sheets) | 8151141 | 연결됨 |
+| GitHub | 8151670 | 연결됨 |
+| Telegram (JARVIS Bot) | 8152088 | 연결됨 |
+| Telegram (2nd) | 8152767 | 연결됨 |
+| OpenAI | 8152358 | 연결됨 |
+| Google Calendar | 8153833 | 연결됨 |
+| Calendly | 8155176 | 연결됨 |
+| Anthropic Claude | 신규 | 생성 중 |
+
+### Make.com MCP 도구 (올바른 __IMTCONN__ 파라미터로 재생성)
+| 도구 | ID | 서비스 |
+|------|-----|--------|
+| Send Telegram Message to Mark | 4601770 | Telegram |
+| Send Telegram Document | 4601818 | Telegram |
+| Search HubSpot Contacts | 4601789 | HubSpot |
+| Search HubSpot Deals | 4601791 | HubSpot |
+| Create HubSpot Contact | 4601797 | HubSpot |
+| Create HubSpot Deal | 4601799 | HubSpot |
+| Get HubSpot Contact Details | 4601800 | HubSpot |
+| Get HubSpot Deal Details | 4601802 | HubSpot |
+| Update HubSpot Contact | 4601804 | HubSpot |
+| Update HubSpot Deal | 4601806 | HubSpot |
+| Create HubSpot Note | 4601809 | HubSpot |
+| Create HubSpot Task | 4601811 | HubSpot |
+| Create HubSpot Company | 4601812 | HubSpot |
+| Search HubSpot Companies | 4601813 | HubSpot |
+| List HubSpot Deal Pipelines | 4601816 | HubSpot |
+| Create GitHub Issue | 4601823 | GitHub |
+| Search GitHub Issues | 4601824 | GitHub |
+
+### 이번 세션 완료 작업 (추가)
+- [x] bore.pub tunnel 연결 확인 (bore.pub:29953)
+- [x] Make.com MCP 도구 22개 `__IMTCONN__` 파라미터로 재생성
+- [x] MCP Toolbox에 도구 추가 (UI에서 완료)
+- [x] Anthropic Claude 연결 생성 진행
+- [ ] JARVIS-CRM-Master AI Agent 생성 완료
+- [ ] Google Drive/Calendar/Gmail 연결 승인 (credential request 대기)
+- [ ] MCP Toolbox에 새로 생성한 도구 추가
+
+### TODO (다음 세션)
+- JARVIS-CRM-Master 에이전트 생성 및 테스트 완료
+- Google Drive/Calendar/Gmail MCP 도구 생성
+- bore.pub 포트 변경 시 자동 업데이트 로직 확인
+- Make.com 나머지 시나리오들 (S1~S7) 활성화
+- 에이전트 테스트: `Search for contact markshin1988@gmail.com`
+
+---
+
+## Session: 2026-04-01 | Claude Code (Opus 4.6) — Part 1
 
 ### 핵심 결정사항
 1. **대화 로그 시스템 구축** — 모든 AI 세션의 대화를 하나의 파일로 관리
 2. **GitHub 3개 리포에 동시 저장** — `sms-optin`, `new-project`, `realestate-crm-automation`
 3. **Google Drive 자동 동기화** — Make.com 시나리오로 GitHub commit 감지 → Google Drive 폴더에 자동 업로드
 4. **모든 AI용 설정 파일 생성** — 15개 파일 (3개 리포 × 5개 설정 파일)
-5. **Google Drive 폴더**: `https://drive.google.com/drive/folders/15RcFkB8TY0eyTK2IjF9K_J8UNqXR32yy`
 
-### 대화 요약
-
-#### 프로젝트 개요
-- **sms-optin**: SMS 옵트인 관련 프로젝트 (index.html 포함)
-- **new-project**: JARVIS — Mark Shin의 부동산 자동화 시스템 (Corcoran Group)
-- **realestate-crm-automation**: 부동산 CRM 자동화 프로젝트
-
-#### Make.com 시나리오 현황
-| 시나리오 | ID | 상태 | 설명 |
-|---------|-----|------|------|
-| S1: Lead Intake → HubSpot Upsert | 4600191 | 비활성 | 리드 입수 → HubSpot |
-| S2: HubSpot Deal → Telegram Alert | 4600192 | 비활성 | 딜 알림 |
-| S3: Telegram Callback → HubSpot Update | 4600193 | 비활성 | 텔레그램 콜백 |
-| S4: SMS Inbound → HubSpot + Telegram | 4599786 | 비활성 | SMS 수신 처리 |
-| S5: Approved Deal → Cloze Sync | 4600194 | 비활성 | 승인된 딜 동기화 |
-| S6: Sheets Listing → HubSpot Sync | 4599785 | 비활성 | 시트 → HubSpot |
-| S7: Daily Error Report → Telegram | 4599783 | 비활성 | 일일 에러 리포트 |
-| S-Future: Closed Won → Notion | 4599784 | 비활성 | 향후 구현 |
-| S-Future: GitHub Backup | 4599787 | 비활성 | 향후 구현 |
-| **Integration Google Drive** | **4600520** | **활성** | **대화 로그 동기화 (GitHub → Google Drive)** |
-| Mark HubSpot CRM | 4600474 | 비활성 | HubSpot CRM 연동 |
-
-#### Make.com 연결 현황
-| 연결 | ID | 상태 |
-|------|-----|------|
-| HubSpot CRM | 8151035 | 연결됨 |
-| Google (Drive/Sheets) | 8151141 | 연결됨 |
-| **GitHub** | **8151670** | **연결됨 (이번 세션에서 추가)** |
-
-#### 이번 세션에서 완료한 작업
+### 완료 작업
 - [x] 대화 로그 파일 생성 및 GitHub 3개 리포에 push
 - [x] Make.com에 GitHub 연결 추가 (ID: 8151670)
-- [x] Make.com 시나리오 업데이트 (GitHub Watch Commits → Google Drive Upload)
-- [x] 시나리오 활성화 (15분 간격 실행)
-- [x] sms-optin: CLAUDE.md, AGENTS.md, copilot-instructions.md, .cursorrules, .continuerules 생성
-- [x] realestate-crm-automation: CLAUDE.md, AGENTS.md, copilot-instructions.md, .cursorrules, .continuerules 생성
-- [x] new-project: 기존 CLAUDE.md, AGENTS.md, copilot-instructions.md에 대화 로그 섹션 추가
-- [x] new-project: .cursorrules, .continuerules 신규 생성
-- [x] conversation-log.md 최종 업데이트
-
-### TODO (다음 세션)
-- Make.com 나머지 시나리오들 활성화 (S1~S7)
-- 각 프로젝트별 구체적 작업 진행
-- 시나리오 테스트 실행 확인
+- [x] Make.com 시나리오 "Integration Google Drive + Telegram" 활성화
+- [x] 3개 리포에 CLAUDE.md, AGENTS.md, copilot-instructions.md, .cursorrules, .continuerules 생성/수정
 
 ---
 
