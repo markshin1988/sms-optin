@@ -1,0 +1,70 @@
+# AI Conversation Log
+
+> 이 파일은 모든 AI 세션의 대화 내용을 기록합니다.
+> 모든 AI는 작업 전 이 파일을 읽고, 작업 후 업데이트해야 합니다.
+> Make.com을 통해 Google Drive에 자동 동기화됩니다.
+
+---
+
+## Session: 2026-04-01 | Claude Code (Opus 4.6)
+
+### 핵심 결정사항
+1. **대화 로그 시스템 구축** — 모든 AI 세션의 대화를 하나의 파일로 관리
+2. **GitHub 3개 리포에 동시 저장** — `sms-optin`, `new-project`, `realestate-crm-automation`
+3. **Google Drive 자동 동기화** — Make.com 시나리오로 GitHub commit 감지 → Google Drive 폴더에 자동 업로드
+4. **Google Drive 폴더**: `https://drive.google.com/drive/folders/15RcFkB8TY0eyTK2IjF9K_J8UNqXR32yy`
+
+### 대화 요약
+
+#### 프로젝트 개요
+- **sms-optin**: SMS 옵트인 관련 프로젝트 (index.html 포함)
+- **new-project**: 새 프로젝트
+- **realestate-crm-automation**: 부동산 CRM 자동화 프로젝트
+
+#### Make.com 시나리오 현황
+| 시나리오 | ID | 상태 | 설명 |
+|---------|-----|------|------|
+| S1: Lead Intake → HubSpot Upsert | 4600191 | 비활성 | 리드 입수 → HubSpot |
+| S2: HubSpot Deal → Telegram Alert | 4600192 | 비활성 | 딜 알림 |
+| S3: Telegram Callback → HubSpot Update | 4600193 | 비활성 | 텔레그램 콜백 |
+| S4: SMS Inbound → HubSpot + Telegram | 4599786 | 비활성 | SMS 수신 처리 |
+| S5: Approved Deal → Cloze Sync | 4600194 | 비활성 | 승인된 딜 동기화 |
+| S6: Sheets Listing → HubSpot Sync | 4599785 | 비활성 | 시트 → HubSpot |
+| S7: Daily Error Report → Telegram | 4599783 | 비활성 | 일일 에러 리포트 |
+| S-Future: Closed Won → Notion | 4599784 | 비활성 | 향후 구현 |
+| S-Future: GitHub Backup | 4599787 | 비활성 | 향후 구현 |
+| Integration Google Drive | 4600520 | 비활성 | 대화 로그 동기화용 (설정 중) |
+| Mark HubSpot CRM | 4600474 | 비활성 | HubSpot CRM 연동 |
+
+#### Make.com 연결 현황
+| 연결 | ID | 상태 |
+|------|-----|------|
+| HubSpot CRM | 8151035 | 연결됨 |
+| Google (Drive/Sheets) | 8151141 | 연결됨 |
+| GitHub | — | **미연결 (추가 예정)** |
+
+#### 이번 세션에서 완료한 작업
+- [x] 대화 로그 파일 생성 및 GitHub 3개 리포에 push
+- [ ] Make.com에 GitHub 연결 추가
+- [ ] Make.com 시나리오 업데이트 (GitHub Watch Commits → Google Drive Upload)
+- [ ] 시나리오 활성화 및 검증
+
+### TODO (다음 세션)
+- Make.com GitHub 연결 인증 완료
+- 시나리오 활성화 후 테스트
+- 각 프로젝트별 구체적 작업 진행
+
+---
+
+## 업데이트 규칙
+
+### AI가 이 파일을 업데이트할 때:
+1. 새 세션 시작 시 `## Session:` 섹션 추가
+2. 핵심 결정사항, 대화 요약, 완료 작업, TODO 기록
+3. 이전 세션의 TODO를 확인하고 진행 상황 업데이트
+4. GitHub에 commit + push → Make.com이 자동으로 Google Drive 동기화
+
+### 포맷 규칙:
+- 최신 세션이 맨 위에 위치
+- 날짜 형식: YYYY-MM-DD
+- 체크박스로 작업 완료 여부 표시
