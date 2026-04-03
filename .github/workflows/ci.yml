@@ -1,0 +1,53 @@
+# SMS Opt-In CI — HTML validation + deploy
+# Static HTML site for Corcoran SMS opt-in
+
+name: SMS Opt-In CI
+
+on:
+  push:
+    branches: [main, claude/*]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate HTML
+        run: |
+          # Basic HTML syntax check
+          if grep -q '</html>' index.html; then
+            echo "HTML structure OK"
+          else
+            echo "ERROR: Missing </html> closing tag"
+            exit 1
+          fi
+
+      - name: Check file size
+        run: |
+          SIZE=$(stat -c%s index.html)
+          echo "index.html: ${SIZE} bytes"
+          if [ "$SIZE" -gt 500000 ]; then
+            echo "WARNING: File exceeds 500KB"
+            exit 1
+          fi
+
+  # GitHub Pages deploy (optional — uncomment if using Pages)
+  # deploy:
+  #   needs: validate
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     pages: write
+  #     id-token: write
+  #   environment:
+  #     name: github-pages
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/configure-pages@v4
+  #     - uses: actions/upload-pages-artifact@v3
+  #       with:
+  #         path: '.'
+  #     - uses: actions/deploy-pages@v4
